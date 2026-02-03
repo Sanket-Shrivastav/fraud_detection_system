@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fraud Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Fraud Detection System for Transactions</h2>
+
+    <label>Amount:</label>
+    <input type="number" id="amount"><br><br>
+
+    <label>Old Balance:</label>
+    <input type="number" id="old_balance"><br><br>
+
+    <label>New Balance:</label>
+    <input type="number" id="new_balance"><br><br>
+
+    <button onclick="predict()">Check Transaction</button>
+
+    <p id="result"></p>
+
+    <script>
+        function predict() {
+            const data = {
+                amount: document.getElementById("amount").value,
+                old_balance: document.getElementById("old_balance").value,
+                new_balance: document.getElementById("new_balance").value
+            };
+
+            fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(res => {
+                document.getElementById("result").innerText =
+                    "Transaction Status: " + res.result;
+            });
+        }
+    </script>
+</body>
+</html>
